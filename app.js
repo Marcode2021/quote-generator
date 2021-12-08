@@ -1,9 +1,25 @@
 // Select DOM elements
 const quoteText = document.querySelector("#quote");
 const authorText = document.querySelector("#author");
+const loader = document.querySelector("#loader");
+const quoteContainer = document.querySelector("#quote-container");
+
+// Show loading
+const loading = function () {
+  loader.hidden = false;
+  quoteContainer.hidden = true;
+};
+
+// Hide Loading
+const complete = function () {
+  loader.hidden = true;
+  quoteContainer.hidden = false;
+};
+
 // Get Quotes from API
 const getQuote = async function () {
   try {
+    loading();
     // Get data from api
     const data = await fetch("https://type.fit/api/quotes");
     const res = await data.json();
@@ -21,6 +37,7 @@ const getQuote = async function () {
     } else {
       quoteText.classList.remove("long-quote");
     }
+    complete();
     //Handle error
   } catch (err) {
     console.error(err);
@@ -33,7 +50,7 @@ const tweetQuote = function () {
   window.open(twitterUrl, "_blank");
 };
 
-// Event handlers
+// Event listeners
 document.querySelector("#twitter").addEventListener("click", tweetQuote);
 document.querySelector("#new-quote").addEventListener("click", getQuote);
 getQuote();
